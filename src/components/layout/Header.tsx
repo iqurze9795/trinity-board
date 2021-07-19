@@ -7,7 +7,7 @@ import {
   Button,
   InputGroup,
 } from "react-bootstrap";
-import { useWallet } from "../../hooks/WalletContext";
+import { useWallet } from "../../hooks/useWallet";
 
 const formatAddress = (address = ''): String => {
   const [start, end] = [address.substring(0, 5), address.substring((address.length - 5), address.length)]
@@ -60,14 +60,17 @@ const AddressForm = () => {
       >
         Connect wallet
       </Button> :
-        <Button
-          variant="secondary"
-          className="btn-grad ml-2"
-          type="button"
-          size="sm"
-        >
-          {formatAddress(address)}
-        </Button>}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <img className="chain-logo" src='/image/chain/bsc.png'></img>
+          <Button
+            variant="secondary"
+            className="btn-grad ml-2"
+            type="button"
+            size="sm"
+          >
+            {formatAddress(address)}
+          </Button>
+        </div>}
     </Form>
   );
 };

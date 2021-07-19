@@ -6,7 +6,7 @@ import {
 } from "../../modules/ethers/LockedTwin";
 import ReactCountdown, { CountdownTimeDelta } from "react-countdown";
 import IconTooltip from "../common/IconTooltip";
-import { useWallet } from "../../hooks/WalletContext";
+import { useWallet } from "../../hooks/useWallet";
 import moment from "moment";
 import TextTransition from "react-text-transition";
 

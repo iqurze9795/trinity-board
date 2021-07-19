@@ -3,7 +3,7 @@ import { Card, Row, Col, Spinner } from "react-bootstrap";
 import { getLPs, LPPrice } from "../../../modules/ethers/LiquidityPool";
 import LPCard from "./LPCard";
 import LPTotalCard from "./LPTotalCard";
-import { useWallet } from "../../../hooks/WalletContext";
+import { useWallet } from "../../../hooks/useWallet";
 
 const LPSection = () => {
   const [LPs, setLPs] = useState<LPPrice[]>([]);
