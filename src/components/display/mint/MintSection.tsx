@@ -3,7 +3,7 @@ import { Card, Row, Col, Spinner, Form } from "react-bootstrap";
 import MintCard from "./MintCard";
 import { getMintPositions, MintPosition } from "../../../modules/ethers/Loan";
 import IconTooltip from "../../common/IconTooltip";
-import { useWallet } from "../../../modules/contexts/WalletContext";
+import { useWallet } from "../../../hooks/WalletContext";
 
 const MintSection = () => {
   const [positions, setPositions] = useState<MintPosition[]>([]);

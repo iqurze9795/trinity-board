@@ -10,7 +10,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import Web3 from "web3";
 import { get } from 'lodash'
-import { Network } from "../../json/network"
+import { Network } from "../json/network"
 
 interface IWalletProps {
   /* null - address is pending / '' - no wallet connected */
@@ -39,7 +39,7 @@ const providerOptions = {
         1666600003: "https://s3.api.harmony.one",
       }
     }
-  }
+  },
 };
 
 let web3Modal: any;
@@ -48,9 +48,9 @@ let provider: any;
 
 const init = async () => {
   web3Modal = new Web3Modal({
-    cacheProvider: false, // optional
+    cacheProvider: true, // optional
     providerOptions, // required
-    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+    // disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
   });
 }
 
@@ -65,7 +65,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     const fetch = async () => {
       await init()
       await onConnect()
-      await fetchAccountData()
     }
     fetch()
     // const address = new URLSearchParams(window.location.search).get("address");
@@ -74,10 +73,12 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const fetchAccountData = async () => {
-    const web3 = new Web3(provider);
-    const address = await web3.eth.getAccounts();
-    console.log("address::", address)
-    setAddress(get(address, [0], ''))
+    console.log("provider::", provider)
+    if (provider) {
+      const web3 = new Web3(provider);
+      const address = await web3.eth.getAccounts();
+      setAddress(get(address, [0], ''))
+    }
   }
 
   const onConnect = async () => {
@@ -85,6 +86,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     console.log("Opening a dialog", web3Modal);
     try {
       provider = await web3Modal.connect();
+      await fetchAccountData();
     } catch (e) {
       console.log("Could not get a wallet connection", e);
       return;

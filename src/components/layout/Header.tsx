@@ -7,8 +7,12 @@ import {
   Button,
   InputGroup,
 } from "react-bootstrap";
-import { useWallet } from "../../modules/contexts/WalletContext";
+import { useWallet } from "../../hooks/WalletContext";
 
+const formatAddress = (address = ''): String => {
+  const [start, end] = [address.substring(0, 5), address.substring((address.length - 5), address.length)]
+  return `${start}...${end}`
+}
 const AddressForm = () => {
   const { address, setAddress, connectWallet } = useWallet();
   const [localAddress, setLocalAddress] = useState("");
@@ -46,8 +50,8 @@ const AddressForm = () => {
           </Button>
         </InputGroup.Append>
       </InputGroup> */}
-
-      <Button
+      {/* <div>{address}</div> */}
+      {address === null || address === '' ? <Button
         variant="secondary"
         size="sm"
         className="ml-2"
@@ -55,7 +59,15 @@ const AddressForm = () => {
         onClick={connectWallet}
       >
         Connect wallet
-      </Button>
+      </Button> :
+        <Button
+          variant="secondary"
+          className="btn-grad ml-2"
+          type="button"
+          size="sm"
+        >
+          {formatAddress(address)}
+        </Button>}
     </Form>
   );
 };

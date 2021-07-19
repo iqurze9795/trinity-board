@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./styles/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { WalletProvider } from "./modules/contexts/WalletContext";
+import { WalletProvider } from "./hooks/WalletContext";
 import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.render(
