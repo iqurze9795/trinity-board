@@ -97,7 +97,7 @@ const Countdown = () => {
               (<TextTransition inline text={locked.valueInUsd} />)
             </small>
             <br />
-            <small>TWIN Locked</small>
+            {/* <small>TWIN Locked</small> */}
           </Col>
           <Col md={12} lg={9} className="text-center">
             <hr className="d-lg-none d-md-block" />

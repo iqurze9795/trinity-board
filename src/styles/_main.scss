@@ -10,37 +10,10 @@ body {
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
 }
 
-.btn {
-  color: white;
-  border-radius: 12px;
-}
-
-.btn-grad {
-  background-image: linear-gradient(
-    to right,
-    #485563 0%,
-    #29323c 51%,
-    #485563 100%
-  );
-}
-.btn-grad {
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  display: block;
-}
-
-.btn-grad:hover {
-  background-position: right center; /* change the direction of the change here */
-  color: #fff;
-  text-decoration: none;
-}
-
 .chain-logo {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
 
 .form-control {

@@ -61,13 +61,13 @@ const AddressForm = () => {
         Connect wallet
       </Button> :
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img className="chain-logo" src='/image/chain/bsc.png'></img>
           <Button
             variant="secondary"
             className="btn-grad ml-2"
             type="button"
             size="sm"
           >
+            <img className="chain-logo" src='/image/chain/bsc.png'></img>
             {formatAddress(address)}
           </Button>
         </div>}

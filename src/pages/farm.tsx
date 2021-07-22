@@ -41,12 +41,12 @@ export const Farm = () => {
           <Col lg="12" className="mt-4">
             <LPTable />
           </Col>
-          <Col md="12" lg="6" className="mt-4">
+          {/* <Col md="12" lg="6" className="mt-4">
             <MintSection />
           </Col>
           <Col md="12" lg="6" className="mt-4">
             <StockTable />
-          </Col>
+          </Col> */}
         </Row>
       </Container>
       <Footer />
