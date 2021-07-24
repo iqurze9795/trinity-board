@@ -29,7 +29,7 @@ const LPSection = () => {
     <Card
       className="p-4"
       style={{
-        background: "#192230",
+        background: "#0B1641",
       }}
     >
       <Card.Body className="pt-0">

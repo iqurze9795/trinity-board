@@ -62,11 +62,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     //component did mounted component did updated
-    const fetch = async () => {
+    (async () => {
       await init()
       await onConnect()
-    }
-    fetch()
+    })()
     // const address = new URLSearchParams(window.location.search).get("address");
     // if (address) setAddress(address);
     // else setAddress("");
@@ -115,9 +114,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const handleManualAddressProvide = useCallback((address: string) => {
     window.location.href = `?address=${address}`;
   }, []);
-
-
-
 
   const handleWalletConnect = useCallback(async () => {
     await onConnect()

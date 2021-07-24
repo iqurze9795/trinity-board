@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Countdown from "../components/display/Countdown";
-import Footer from "../components/layout/Footer";
-import Header from "../components/layout/Header";
+import Footer from "../layout/components/Footer";
+import Header from "../layout/components/Header";
 import LPTable from "../components/display/lp/LPSection";
 import MintSection from "../components/display/mint/MintSection";
 import PriceCard from "../components/display/PriceCard";

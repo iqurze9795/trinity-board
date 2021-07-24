@@ -1,15 +1,16 @@
 .btn {
   color: white;
   border-radius: 12px;
+  border: 0px;
   height: 40px;
 }
 
 .btn-grad {
   background-image: linear-gradient(
     to right,
-    #485563 0%,
-    #29323c 51%,
-    #485563 100%
+    #4b6cb7 0%,
+    #0B1641 51%,
+    #4b6cb7 100%
   );
 }
 .btn-grad {
@@ -22,6 +23,7 @@
 }
 
 .btn-grad:hover {
+  border: 0px;
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
