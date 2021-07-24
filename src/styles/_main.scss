@@ -5,9 +5,29 @@
 }
 
 body {
+  // background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1124&q=100');
+  // background-position: center;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
+}
+
+.glass {
+  will-change: transform;
+  backface-visibility: hidden;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(9, 21, 64, 0.31) 100%
+  );
+
+  backdrop-filter: none;
+  box-shadow: rgb(0 0 0 / 1%) 16px 1px 14px;
+}
+.header-title {
+  font-size: 1.2rem;
+  color: black;
+  font-weight: bold;
 }
 
 .chain-logo {
@@ -25,9 +45,9 @@ body {
   transition: 0.25s;
 }
 
-.navbar-brand:hover {
-  transform: rotate(-5deg);
-}
+// .navbar-brand:hover {
+//   transform: rotate(-5deg);
+// }
 
 @keyframes fade-list {
   from {

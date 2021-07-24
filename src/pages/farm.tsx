@@ -4,6 +4,9 @@ import Countdown from "../components/display/Countdown";
 import Footer from "../layout/components/Footer";
 import Header from "../layout/components/Header";
 import LPTable from "../components/display/lp/LPSection";
+import MintSection from "../components/display/mint/MintSection";
+import PriceCard from "../components/display/PriceCard";
+import StockTable from "../components/display/stock/StockSection";
 import { getDopplePrice, getTwinPrice } from "../modules/ethers/GovernanceToken";
 import PriceTitle from "../components/common/PriceTitle";
 
@@ -25,26 +28,35 @@ export const Farm = () => {
   return (
     <>
       <PriceTitle twinPrice={twinPrice} dopPrice={dopplePrice} />
-      <Container
-        className="pb-4"
-        style={{ minHeight: "calc(100vh - 10vh - 6vh)" }}
-      >
-        <Row>
-          {/* TODO: Stop hardcoding token data */}
-          <Col md="12" lg="6" className="mt-4 mt-lg-0">
-            <Countdown />
-          </Col>
-          <Col lg="12" className="mt-4">
-            <LPTable />
-          </Col>
-          {/* <Col md="12" lg="6" className="mt-4">
+      <Row>
+        {/* TODO: Stop hardcoding token data */}
+        <Col md="6" lg="3">
+          <PriceCard
+            symbol="Trinity"
+            price={twinPrice}
+            address="0x3806aae953a3a873D02595f76C7698a57d4C7A57"
+          />
+        </Col>
+        <Col md="6" lg="3" className="mt-4 mt-md-0">
+          <PriceCard
+            symbol="TDollar"
+            price={dopplePrice}
+            address="0x844fa82f1e54824655470970f7004dd90546bb28"
+          />
+        </Col>
+        <Col md="12" lg="6" className="mt-4 mt-lg-0">
+          <Countdown />
+        </Col>
+        <Col lg="12" className="mt-4">
+          <LPTable />
+        </Col>
+        {/* <Col md="12" lg="6" className="mt-4">
             <MintSection />
           </Col>
           <Col md="12" lg="6" className="mt-4">
             <StockTable />
           </Col> */}
-        </Row>
-      </Container>
+      </Row>
     </>
   );
 }
