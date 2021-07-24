@@ -3,7 +3,7 @@ import { ProtocalCard } from './ProtocalCard'
 import Protocal from './schema/bsc.json'
 export const ProtocalList = () => {
   return (
-    <Card className="glass" style={{ minHeight: 500, padding: 30 }}>
+    <Card className="glass" style={{ padding: 30 }}>
       <Row>
         <div className="d-flex align-items-center">
           <img
@@ -19,7 +19,7 @@ export const ProtocalList = () => {
       </Row>
       <Row style={{ padding: 15 }}>
         {Protocal.map((item, index) => {
-          return <Col md="3" >
+          return <Col md="3" style={{ marginBottom: 10 }} >
             <ProtocalCard
               name={item["name"]}
               logo={item["logo"]}

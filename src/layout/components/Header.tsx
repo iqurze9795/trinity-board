@@ -63,7 +63,7 @@ const AddressForm = () => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Button
             variant="secondary"
-            className="btn-grad ml-2"
+            className="btn-primary ml-2"
             type="button"
             size="sm"
           >

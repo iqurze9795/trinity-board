@@ -11,7 +11,7 @@ export const ProtocalCard = ({ name, logo, site }: Props) => {
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Button
         variant="secondary"
-        className="btn-grad ml-2"
+        className="btn-card ml-2"
         type="button"
         style={{ minWidth: 180 }}
         size="sm"
