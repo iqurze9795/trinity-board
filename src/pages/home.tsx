@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Countdown from "../components/display/Countdown";
-import Footer from "../layout/components/Footer";
-import Header from "../layout/components/Header";
 import LPTable from "../components/display/lp/LPSection";
-import MintSection from "../components/display/mint/MintSection";
 import PriceCard from "../components/display/PriceCard";
-import StockTable from "../components/display/stock/StockSection";
 import { getDopplePrice, getTwinPrice } from "../modules/ethers/GovernanceToken";
 import PriceTitle from "../components/common/PriceTitle";
 
@@ -27,14 +23,12 @@ export const Home = () => {
 
   return (
     <>
-      {/* <Header /> */}
       <PriceTitle twinPrice={twinPrice} dopPrice={dopplePrice} />
       <Container
         className="pb-4"
         style={{ minHeight: "calc(100vh - 10vh - 6vh)" }}
       >
         <Row>
-          {/* TODO: Stop hardcoding token data */}
           <Col md="6" lg="3">
             <PriceCard
               symbol="Trinity"
@@ -63,7 +57,6 @@ export const Home = () => {
           </Col> */}
         </Row>
       </Container>
-      {/* <Footer /> */}
     </>
   );
 }

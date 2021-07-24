@@ -4,9 +4,6 @@ import Countdown from "../components/display/Countdown";
 import Footer from "../layout/components/Footer";
 import Header from "../layout/components/Header";
 import LPTable from "../components/display/lp/LPSection";
-import MintSection from "../components/display/mint/MintSection";
-import PriceCard from "../components/display/PriceCard";
-import StockTable from "../components/display/stock/StockSection";
 import { getDopplePrice, getTwinPrice } from "../modules/ethers/GovernanceToken";
 import PriceTitle from "../components/common/PriceTitle";
 
@@ -27,7 +24,6 @@ export const Farm = () => {
 
   return (
     <>
-      <Header />
       <PriceTitle twinPrice={twinPrice} dopPrice={dopplePrice} />
       <Container
         className="pb-4"
@@ -49,7 +45,6 @@ export const Farm = () => {
           </Col> */}
         </Row>
       </Container>
-      <Footer />
     </>
   );
 }

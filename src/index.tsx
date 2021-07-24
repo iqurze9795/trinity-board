@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./styles/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { WalletProvider } from "./hooks/useWallet";
 import { BrowserRouter } from 'react-router-dom'
 import { Layout } from './layout/default'
+import "./styles/index.scss";
 
 ReactDOM.render(
   <React.StrictMode>
