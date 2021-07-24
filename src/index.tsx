@@ -5,13 +5,15 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { WalletProvider } from "./hooks/useWallet";
 import { BrowserRouter } from 'react-router-dom'
-
+import { Layout } from './layout/default'
 
 ReactDOM.render(
   <React.StrictMode>
     <WalletProvider>
       <BrowserRouter>
-        <App />
+        <Layout>
+          <App />
+        </Layout>
       </BrowserRouter>
     </WalletProvider>
   </React.StrictMode>,

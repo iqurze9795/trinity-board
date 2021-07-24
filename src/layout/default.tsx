@@ -1,9 +1,21 @@
-import { PureComponent } from "react"
+import { Component, createContext } from "react";
+import Header from './components/Header'
+import Footer from './components/Footer'
+const ContextLayout = createContext({})
 
-class DefaultLayout extends PureComponent {
+class Layout extends Component {
   render() {
-    return (<div>hello this is layout</div>)
+    const { children } = this.props
+    return (
+      <ContextLayout.Provider value={{}}>
+        <div>
+          <Header />
+          {children}
+          <Footer />
+        </div>
+      </ContextLayout.Provider >
+    )
   }
 }
 
-export default DefaultLayout
+export { Layout, ContextLayout }

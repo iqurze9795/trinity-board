@@ -27,7 +27,7 @@ export const Home = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <PriceTitle twinPrice={twinPrice} dopPrice={dopplePrice} />
       <Container
         className="pb-4"
@@ -63,7 +63,7 @@ export const Home = () => {
           </Col> */}
         </Row>
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
