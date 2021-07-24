@@ -1,4 +1,6 @@
 import { Card, Row, Col } from "react-bootstrap";
+import { ProtocalCard } from './ProtocalCard'
+import Protocal from './schema/bsc.json'
 export const ProtocalList = () => {
   return (
     <Card className="glass" style={{ minHeight: 500, padding: 30 }}>
@@ -14,6 +16,17 @@ export const ProtocalList = () => {
           />
           <span className="header-title">Binance smart chain</span>
         </div>
+      </Row>
+      <Row style={{ padding: 15 }}>
+        {Protocal.map((item, index) => {
+          return <Col md="3" >
+            <ProtocalCard
+              name={item["name"]}
+              logo={item["logo"]}
+              site={item["oficial-site"]}
+            />
+          </Col>
+        })}
       </Row>
     </Card >
   )

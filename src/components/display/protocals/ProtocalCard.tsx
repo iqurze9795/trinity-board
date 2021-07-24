@@ -1,8 +1,24 @@
-import { Card } from "react-bootstrap";
-export const ProtocalCard = () => {
+import { Row, Card, Col, Button } from "react-bootstrap";
+interface Props {
+  name: string;
+  logo: string;
+  site: string;
+}
+const openProtocal = () => { }
+export const ProtocalCard = ({ name, logo, site }: Props) => {
+
   return (
-    <Card>
-      hello
-    </Card>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Button
+        variant="secondary"
+        className="btn-grad ml-2"
+        type="button"
+        style={{ minWidth: 180 }}
+        size="sm"
+      >
+        <img className="chain-logo" src={logo}></img>
+        {name}
+      </Button>
+    </div>
   )
 }
