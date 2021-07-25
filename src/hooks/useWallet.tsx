@@ -8,16 +8,24 @@ import {
 } from "react";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
-import Web3 from "web3";
+import * as ethcall from "ethcall";
+import { ethers } from "ethers";
 import { get } from 'lodash'
 import { Network } from "../json/network"
 
 interface IWalletProps {
   /* null - address is pending / '' - no wallet connected */
   address: string | null;
+  provider: IAppProvider | null;
   setAddress: (address: string) => void;
   connectWallet: () => void;
 }
+interface IAppProvider {
+  web3Provider: any,
+  provider: any,
+  ethcallProvider: any
+}
+
 const infuraId = atob(Network.ETHEREUM_NODE_URL).split('/').pop()
 
 const providerOptions = {
@@ -43,7 +51,7 @@ const providerOptions = {
 };
 
 let web3Modal: any;
-let provider: any;
+let walletProvider: any;
 
 
 const init = async () => {
@@ -58,6 +66,7 @@ const WalletContext = createContext({} as IWalletProps);
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const [address, setAddress] = useState<string | null>(null);
+  const [provider, setProvider] = useState<IAppProvider | null>(null);
 
 
   useEffect(() => {
@@ -70,45 +79,57 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     // if (address) setAddress(address);
     // else setAddress("");
   }, []);
-  const initEthers = () => {
-    const App = {}
+  const initEthers = async () => {
+    const App: IAppProvider = {
+      web3Provider: null,
+      provider: null,
+      ethcallProvider: null
+    }
+    if (walletProvider) {
+      App.web3Provider = walletProvider
+      App.provider = new ethers.providers.Web3Provider(walletProvider)
+      try {
+        // Request account access
+        const accounts = await walletProvider.request({ method: 'eth_requestAccounts' })
+        setAddress(get(accounts, [0], ''))
+        setProvider(App)
+      } catch (error) {
+        // User denied account access...
+        console.error('User denied account access')
+      }
+    }
+    App.ethcallProvider = new ethcall.Provider();
+    await App.ethcallProvider.init(App.provider);
   }
 
-  const fetchAccountData = async () => {
-    if (provider) {
-      const web3 = new Web3(provider);
-      const address = await web3.eth.getAccounts();
-      setAddress(get(address, [0], ''))
-    }
-  }
 
   const onConnect = async () => {
 
     console.log("Opening a dialog", web3Modal);
     try {
-      provider = await web3Modal.connect();
-      await fetchAccountData();
+      walletProvider = await web3Modal.connect();
+      await initEthers();
     } catch (e) {
       console.log("Could not get a wallet connection", e);
       return;
     }
 
     // Subscribe to accounts change
-    provider.on("accountsChanged", async (info: any) => {
+    walletProvider.on("accountsChanged", async (info: any) => {
       console.log(info)
-      await fetchAccountData();
+      await initEthers();
     });
 
     // Subscribe to chainId change
-    provider.on("chainChanged", async (info: any) => {
+    walletProvider.on("chainChanged", async (info: any) => {
       console.log(info)
-      await fetchAccountData();
+      await initEthers();
     });
 
     // Subscribe to networkId change
-    provider.on("networkChanged", async (info: any) => {
+    walletProvider.on("networkChanged", async (info: any) => {
       console.log(info)
-      await fetchAccountData();
+      await initEthers();
     });
 
   }
@@ -125,6 +146,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     <WalletContext.Provider
       value={{
         address,
+        provider,
         setAddress: handleManualAddressProvide,
         connectWallet: handleWalletConnect,
       }}
