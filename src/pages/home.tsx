@@ -1,9 +1,9 @@
-import { ProtocalList } from '../components/display/protocals/ProtocalList'
+import { ProtocolList } from '../components/display/protocols/ProtocolList'
 
 export const Home = () => {
   return (
     <>
-      <ProtocalList />
+      <ProtocolList />
     </>
   );
 }

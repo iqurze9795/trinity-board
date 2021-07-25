@@ -1,9 +1,9 @@
 import { Card, Row, Col } from "react-bootstrap";
-import { ProtocalCard } from './ProtocalCard'
-import BscProtocal from './schema/bsc.json'
-import PolygonProtocal from './schema/polygon.json'
+import { ProtocolCard } from './ProtocolCard'
+import BscProtocol from './schema/bsc.json'
+import PolygonProtocol from './schema/polygon.json'
 
-export const ProtocalList = () => {
+export const ProtocolList = () => {
   return (
     <>
       <h4 style={{ color: "white", marginBottom: 15 }}>Support Protocals</h4>
@@ -18,16 +18,17 @@ export const ProtocalList = () => {
                 height: "40px",
               }}
             />
-            <span className="header-title">Binance smart chain ({BscProtocal.length})</span>
+            <span className="header-title">Binance smart chain ({BscProtocol.length})</span>
           </div>
         </Row>
         <Row style={{ padding: 15 }}>
-          {BscProtocal.map((item, index) => {
+          {BscProtocol.map((item, index) => {
             return <Col md="3" style={{ marginBottom: 10 }} >
-              <ProtocalCard
+              <ProtocolCard
                 name={item["name"]}
                 logo={item["logo"]}
                 site={item["oficial-site"]}
+                path={item["path"]}
               />
             </Col>
           })}
@@ -44,16 +45,17 @@ export const ProtocalList = () => {
                 height: "40px",
               }}
             />
-            <span className="header-title">Polygon chain ({PolygonProtocal.length})</span>
+            <span className="header-title">Polygon chain ({PolygonProtocol.length})</span>
           </div>
         </Row>
         <Row style={{ padding: 15 }}>
-          {PolygonProtocal.map((item, index) => {
+          {PolygonProtocol.map((item, index) => {
             return <Col md="3" style={{ marginBottom: 10 }} >
-              <ProtocalCard
+              <ProtocolCard
                 name={item["name"]}
                 logo={item["logo"]}
                 site={item["oficial-site"]}
+                path={item["path"]}
               />
             </Col>
           })}
