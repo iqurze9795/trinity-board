@@ -6,6 +6,7 @@ import PolygonProtocal from './schema/polygon.json'
 export const ProtocalList = () => {
   return (
     <>
+      <h4 style={{ color: "white", marginBottom: 15 }}>Support Protocals</h4>
       <Card className="glass" style={{ padding: 30, marginBottom: 20 }}>
         <Row>
           <div className="d-flex align-items-center">

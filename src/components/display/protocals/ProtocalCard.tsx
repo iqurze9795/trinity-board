@@ -10,7 +10,7 @@ export const ProtocalCard = ({ name, logo, site }: Props) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Button
-        variant="secondary"
+        // variant="secondary"
         className="btn-card ml-2"
         type="button"
         style={{ minWidth: 180 }}

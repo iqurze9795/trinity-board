@@ -85,6 +85,7 @@ const Header = () => {
             src="/logo.svg"
             height="30"
             className="d-inline-block align-top mr-1 p-1"
+            style={{ marginLeft: -4 }}
           />
           <b
             style={{

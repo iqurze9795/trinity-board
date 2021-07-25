@@ -6,24 +6,9 @@
 }
 
 .btn-card {
-  background-image: linear-gradient(
-    to right,
-    #4b6cb7 0%,
-    #0b1641 51%,
-    #4b6cb7 100%
-  );
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  display: block;
-  &:hover {
-    border: 0px;
-    background-position: right center; /* change the direction of the change here */
-    color: #fff;
-    text-decoration: none;
-  }
+  background: transparent !important;
+  border: solid 1px;
+  border-color: rgb(255, 255, 255, 0.4);
 }
 
 .btn-primary {
