@@ -1,5 +1,5 @@
-import { Row, Card, Col, Button } from "react-bootstrap";
-import React, { useCallback } from 'react';
+import { Button } from "react-bootstrap";
+import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 interface Props {

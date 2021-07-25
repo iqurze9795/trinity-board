@@ -70,9 +70,11 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     // if (address) setAddress(address);
     // else setAddress("");
   }, []);
+  const initEthers = () => {
+    const App = {}
+  }
 
   const fetchAccountData = async () => {
-    console.log("provider::", provider)
     if (provider) {
       const web3 = new Web3(provider);
       const address = await web3.eth.getAccounts();
