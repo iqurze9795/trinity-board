@@ -87,7 +87,11 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     }
     if (walletProvider) {
       App.web3Provider = walletProvider
-      App.provider = new ethers.providers.Web3Provider(walletProvider)
+      App.provider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org",
+        {
+          name: "Binance Smart Chain",
+          chainId: 56,
+        })
       try {
         // Request account access
         const accounts = await walletProvider.request({ method: 'eth_requestAccounts' })

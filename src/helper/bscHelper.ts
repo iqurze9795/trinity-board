@@ -1,6 +1,8 @@
 import { Contract, ethers } from 'ethers'
 import { bscTokens, BSC_VAULT_ABI } from '../chain-config/bsc'
-import { getPrices } from "./price";
+import { ERC20_ABI } from '../chain-config/eth'
+import { getPrices } from './price'
+import { get } from 'lodash'
 
 interface IBscChefContract {
   App: any,
@@ -41,7 +43,7 @@ export const loadBscChefContract = async (props: IBscChefContract) => {
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
-    / 10 ** rewardToken.decimals * 604800 / 3
+    / 10 ** rewardToken?.decimals * 604800 / 3
   const poolInfos = await Promise.all([poolCount].map(async (x) =>
     await getBscPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
   console.log("pool infos::", poolInfos)
@@ -63,17 +65,15 @@ export const getBscToken = async (App: any, tokenAddress: string, stakingAddress
     return getBep20(App, null, tokenAddress, "")
   }
   try {
-    const VAULT = new ethers.Contract(tokenAddress, BSC_VAULT_ABI, App.provider);
-    const _token = await VAULT.token();
-    if (_token.toLowerCase() == "0x3b73c1b2ea59835cbfcadade5462b6ab630d9890") {
-      throw "0x3b73c1b2ea59835cbfcadade5462b6ab630d9890 is self referential";
-    }
-    const vault = await getBscVault(App, VAULT, tokenAddress, stakingAddress) as any;
-    window.localStorage.setItem(tokenAddress, "bscVault");
-    return vault;
+    const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+    const _name = await erc20.name();
+    const erc20tok = await getBep20(App, erc20, tokenAddress, stakingAddress);
+    console.log("erc20tok", erc20tok)
+    window.localStorage.setItem(tokenAddress, "erc20");
+    return erc20tok;
   }
   catch (err) {
-    console.log("Get vault bsc error::", err)
+    console.log(`Couldn't match ${tokenAddress} to any known token type.`);
   }
 }
 
@@ -109,7 +109,8 @@ const getBep20 = async (App: any, token: any, address: string, stakingAddress: s
 const getBscVault = async (App: any, vault: Contract, address: string, stakingAddress: string) => {
   const decimals = await vault.decimals();
   const token_ = await vault.token();
-  const token = await getBscToken(App, token_, address);
+  const token = await getBscToken(App, token_, address)
+  const _tokens = token?.tokens || []
   return {
     address,
     name: await vault.name(),
@@ -121,7 +122,7 @@ const getBscVault = async (App: any, vault: Contract, address: string, stakingAd
     token: token,
     balance: await vault.balance(),
     contract: vault,
-    tokens: [address].concat(token.tokens),
+    tokens: [address].concat(_tokens),
   }
 }
 
@@ -142,7 +143,7 @@ const getBscPoolInfo = async (App: any, chefContract: Contract, chefAddress: str
   const poolToken = await getBscToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
-  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  const staked = userInfo.amount / 10 ** poolToken?.decimals;
   return {
     address: poolInfo.lpToken ?? poolInfo.token,
     allocPoints: poolInfo.allocPoint ?? 1,

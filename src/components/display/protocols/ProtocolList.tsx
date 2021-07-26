@@ -50,7 +50,7 @@ export const ProtocolList = () => {
         </Row>
         <Row style={{ padding: 15 }}>
           {PolygonProtocol.map((item, index) => {
-            return <Col md="3" style={{ marginBottom: 10 }} >
+            return <Col md="3" xs="2" style={{ marginBottom: 10 }} >
               <ProtocolCard
                 name={item["name"]}
                 logo={item["logo"]}
