@@ -1,11 +1,6 @@
 import { Helmet } from "react-helmet";
 
-interface Props {
-  twinPrice: string;
-  dopPrice: string;
-}
-
-const PriceTitle = ({ twinPrice, dopPrice }: Props) => {
+const PriceTitle = () => {
   return (
     <Helmet defer={false}>
       <title>
