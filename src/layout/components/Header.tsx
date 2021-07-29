@@ -1,11 +1,9 @@
-import { useState, useCallback, useEffect } from "react";
 import {
   Container,
   Nav,
   Navbar,
   Form,
   Button,
-  InputGroup,
 } from "react-bootstrap";
 import { useWallet } from "../../hooks/useWallet";
 
@@ -14,43 +12,10 @@ const formatAddress = (address = ''): String => {
   return `${start}...${end}`
 }
 const AddressForm = () => {
-  const { address, setAddress, connectWallet } = useWallet();
-  const [localAddress, setLocalAddress] = useState("");
-
-  useEffect(() => {
-    if (address) setLocalAddress(address);
-  }, [address]);
-
-  const handleSearch = useCallback(() => {
-    setAddress(localAddress);
-  }, [localAddress]);
+  const { address, connectWallet } = useWallet();
 
   return (
     <Form inline>
-      {/* <InputGroup>
-        <Form.Control
-          placeholder="Wallet Address"
-          name="address"
-          value={localAddress}
-          onChange={(e) => {
-            setLocalAddress(e.target.value);
-          }}
-          aria-label="Wallet Address"
-          size="sm"
-        />
-        <InputGroup.Append>
-          <Button
-            variant="primary"
-            size="sm"
-            type="button"
-            name="search"
-            onClick={handleSearch}
-          >
-            <i className="fa fa-search" />
-          </Button>
-        </InputGroup.Append>
-      </InputGroup> */}
-      {/* <div>{address}</div> */}
       {address === null || address === '' ? <Button
         variant="secondary"
         size="sm"
