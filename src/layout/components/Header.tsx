@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import {
   Container,
   Nav,
@@ -14,13 +16,14 @@ const formatAddress = (address = ''): String => {
 const AddressForm = () => {
   const { address, connectWallet } = useWallet();
 
+
   return (
     <Form inline>
       {address === null || address === '' ? <Button
         variant="secondary"
-        size="sm"
-        className="ml-2"
+        className="btn-primary ml-2"
         type="button"
+        size="sm"
         onClick={connectWallet}
       >
         Connect wallet
