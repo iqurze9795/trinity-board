@@ -37,7 +37,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     const web3Provider = new ethers.providers.Web3Provider(provider)
     const accounts = await web3Provider.listAccounts()
     const network = await web3Provider.getNetwork()
-    console.log("network::", network)
     setAddress(accounts[0])
     setNetworkInfo(network)
     setWeb3Provider(web3Provider)

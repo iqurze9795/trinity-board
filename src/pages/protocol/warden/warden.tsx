@@ -1,24 +1,29 @@
 import { useWallet } from "../../../hooks/useWallet";
-import { ethers } from "ethers";
-import WAD_CHEF_ABI from './abi.json'
+import { Contract, ethers } from "ethers";
+import { ABI, META } from './config'
 import { getBscPrices, loadBscChefContract } from "../../../helper/bscHelper";
+import { useBscPrice } from "../../../hooks/bsc/useBscPrice";
+import { useEffect } from "react";
 import { useCallback } from "react";
+const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
+  const multiplier = await contract.BONUS_MULTIPLIER();
+  return await contract.wardenPerBlock() / 1e18
+    * 604800 / 3 * multiplier;
+}
 
 export const Warden = () => {
   const { web3Provider, walletProvider } = useWallet();
+  const bscPrices = useBscPrice();
 
-  useCallback(async () => {
-    console.log("web3Provider", web3Provider)
+  (async () => {
     if (web3Provider) {
-      const WAD_CHEF_ADDR = "0xde866dD77b6DF6772e320dC92BFF0eDDC626C674"
-      const WAD_CHEF = new ethers.Contract(WAD_CHEF_ADDR, WAD_CHEF_ABI, web3Provider);
-      const multiplier = await WAD_CHEF.BONUS_MULTIPLIER();
-      const rewardsPerWeek = await WAD_CHEF.wardenPerBlock() / 1e18
-        * 604800 / 3 * multiplier;
-      const rewardTokenTicker = "WAD";
+      const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
+      const rewardsPerWeek = await calculateRewards(wadContract)
       const tokens = {};
-      const prices = await getBscPrices();
-      console.log(rewardsPerWeek)
+      console.log("bscPrices", bscPrices)
+      // const prices = await getBscPrices();
+
+
       // await loadBscChefContract(
       //   {
       //     App: walletProvider,
@@ -35,7 +40,8 @@ export const Warden = () => {
       //     deathPoolIndices: [1]
       //   });
     }
-  }, [])()
+  })()
+
 
   return (
     <>
