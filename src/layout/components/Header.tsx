@@ -14,8 +14,7 @@ const formatAddress = (address = ''): String => {
   return `${start}...${end}`
 }
 const AddressForm = () => {
-  const { address, connectWallet } = useWallet();
-
+  const { address, networkInfo, connectWallet } = useWallet();
 
   return (
     <Form inline>
@@ -35,7 +34,7 @@ const AddressForm = () => {
             type="button"
             size="sm"
           >
-            <img className="chain-logo" src='/image/chain/bsc.png'></img>
+            <img className="chain-logo" src={`/image/chain/${networkInfo?.name}.png`}></img>
             {formatAddress(address)}
           </Button>
         </div>}

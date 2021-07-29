@@ -1,33 +1,29 @@
 import {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
   useEffect,
   useState,
 } from "react";
 
-import * as ethcall from "ethcall";
 import { ethers } from "ethers";
-import { get } from 'lodash'
+
 
 interface IWalletProps {
   walletProvider: any | null;
+  web3Provider: any | null,
   address: string | null,
+  networkInfo: any | null,
   connectWallet: () => void;
 }
-interface IAppProvider {
-  web3Provider: any,
-  provider: any,
-  ethcallProvider: any
-}
-
 
 
 const WalletContext = createContext({} as IWalletProps);
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const [walletProvider, setWalletProvider] = useState<any | null>(null);
+  const [web3Provider, setWeb3Provider] = useState<any | null>(null);
   const [address, setAddress] = useState<any | null>(null)
+  const [networkInfo, setNetworkInfo] = useState<any | null>(null)
   const web3Modal = (window as any).web3Modal
 
   useEffect(() => {
@@ -38,8 +34,13 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   }, [setWalletProvider]);
 
   const onInitAccountInfo = async (provider: any) => {
-    const accounts = await provider.request({ method: 'eth_requestAccounts' })
+    const web3Provider = new ethers.providers.Web3Provider(provider)
+    const accounts = await web3Provider.listAccounts()
+    const network = await web3Provider.getNetwork()
+    console.log("network::", network)
     setAddress(accounts[0])
+    setNetworkInfo(network)
+    setWeb3Provider(web3Provider)
   }
 
   const subscribeProvider = async (provider: any) => {
@@ -57,7 +58,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
     // Subscribe to networkId change
     provider.on("networkChanged", async (info: any) => {
-      console.log(info)
       await onInitAccountInfo(provider)
     });
   }
@@ -67,6 +67,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       const result = await web3Modal.connect()
       await subscribeProvider(result)
       await onInitAccountInfo(result)
+
       setWalletProvider(result)
     } catch (e) {
       console.log("Could not get a wallet connection", e);
@@ -77,6 +78,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     <WalletContext.Provider
       value={{
         address,
+        networkInfo,
+        web3Provider,
         walletProvider,
         connectWallet: connectWallet,
       }}
