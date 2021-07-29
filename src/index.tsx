@@ -7,7 +7,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { WalletProvider } from "./hooks/useWallet";
 import { BrowserRouter } from 'react-router-dom'
 import { Layout } from './layout/default'
-import { Network } from "./json/network"
+import { Network } from "./chain-config/network"
 import "./styles/index.scss";
 
 const providerOptions = {

@@ -25,6 +25,7 @@ export const ProtocolList = () => {
           {BscProtocol.map((item, index) => {
             return <Col md="3" style={{ marginBottom: 10 }} >
               <ProtocolCard
+                key={index.toString()}
                 name={item["name"]}
                 logo={item["logo"]}
                 site={item["oficial-site"]}
@@ -52,6 +53,7 @@ export const ProtocolList = () => {
           {PolygonProtocol.map((item, index) => {
             return <Col md="3" xs="2" style={{ marginBottom: 10 }} >
               <ProtocolCard
+                key={index.toString()}
                 name={item["name"]}
                 logo={item["logo"]}
                 site={item["oficial-site"]}
