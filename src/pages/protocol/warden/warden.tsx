@@ -3,7 +3,7 @@ import { useWallet } from "../../../hooks/useWallet";
 import { Contract, ethers } from "ethers";
 import { ABI, META } from './config'
 import { useBscPrice } from "../../../hooks/bsc/useBscPrice";
-import { useChefContract } from "../../../hooks/bsc/useChefContract";
+import { chefContractHelper } from "../../../hooks/bsc/helper/contractHelper";
 import { useState } from "react";
 
 const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
@@ -13,31 +13,28 @@ const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
 }
 
 export const Warden = () => {
-  const { web3Provider, walletProvider } = useWallet();
-  const [wadContract, setSetContract] = useState<ethers.Contract | null>(null)
-  const [rewardsPerWeekFixed, setRewardsPerWeekFixed] = useState<number | null>(null)
+  const { web3Provider, walletProvider, address } = useWallet();
   const bscPrices = useBscPrice();
-  const resp = useChefContract({
-    walletProvider,
-    prices: bscPrices,
-    chef: wadContract,
-    chefAddress: META.CHEF_ADDRESS,
-    chefAbi: ABI,
-    rewardTokenTicker: "WAD",
-    rewardTokenFunction: "warden",
-    rewardsPerBlockFunction: null,
-    rewardsPerWeekFixed: rewardsPerWeekFixed,
-    pendingRewardsFunction: "pendingWarden",
-    deathPoolIndices: [1]
-  });
 
   useEffect(() => {
     (async () => {
-      if (web3Provider) {
+      if (web3Provider && bscPrices) {
         const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
         const rewardsPerWeek = await calculateRewards(wadContract)
-        setSetContract(wadContract)
-        setRewardsPerWeekFixed(rewardsPerWeek)
+        const r = chefContractHelper({
+          address,
+          walletProvider,
+          prices: bscPrices,
+          chef: wadContract,
+          chefAddress: META.CHEF_ADDRESS,
+          chefAbi: ABI,
+          rewardTokenTicker: "WAD",
+          rewardTokenFunction: "warden",
+          rewardsPerBlockFunction: null,
+          rewardsPerWeekFixed: rewardsPerWeek,
+          pendingRewardsFunction: "pendingWarden",
+          deathPoolIndices: [1]
+        });
       }
     })()
   }, [bscPrices, web3Provider])
