@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useWallet } from "../../../hooks/useWallet";
 import { Contract, ethers } from "ethers";
 import { ABI, META } from './config'
-import { getBscPrices, loadBscChefContract } from "../../../helper/bscHelper";
 import { useBscPrice } from "../../../hooks/bsc/useBscPrice";
-import { useEffect } from "react";
-import { useCallback } from "react";
+import { useChefContract } from "../../../hooks/bsc/useChefContract";
+import { useState } from "react";
+
 const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
   const multiplier = await contract.BONUS_MULTIPLIER();
   return await contract.wardenPerBlock() / 1e18
@@ -13,35 +14,33 @@ const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
 
 export const Warden = () => {
   const { web3Provider, walletProvider } = useWallet();
+  const [wadContract, setSetContract] = useState<ethers.Contract | null>(null)
+  const [rewardsPerWeekFixed, setRewardsPerWeekFixed] = useState<number | null>(null)
   const bscPrices = useBscPrice();
+  const resp = useChefContract({
+    walletProvider,
+    prices: bscPrices,
+    chef: wadContract,
+    chefAddress: META.CHEF_ADDRESS,
+    chefAbi: ABI,
+    rewardTokenTicker: "WAD",
+    rewardTokenFunction: "warden",
+    rewardsPerBlockFunction: null,
+    rewardsPerWeekFixed: rewardsPerWeekFixed,
+    pendingRewardsFunction: "pendingWarden",
+    deathPoolIndices: [1]
+  });
 
-  (async () => {
-    if (web3Provider) {
-      const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
-      const rewardsPerWeek = await calculateRewards(wadContract)
-      const tokens = {};
-      console.log("bscPrices", bscPrices)
-      // const prices = await getBscPrices();
-
-
-      // await loadBscChefContract(
-      //   {
-      //     App: walletProvider,
-      //     tokens,
-      //     prices,
-      //     chef: WAD_CHEF,
-      //     chefAddress: WAD_CHEF_ADDR,
-      //     chefAbi: WAD_CHEF_ABI,
-      //     rewardTokenTicker: rewardTokenTicker,
-      //     rewardTokenFunction: "warden",
-      //     rewardsPerBlockFunction: null,
-      //     rewardsPerWeekFixed: rewardsPerWeek,
-      //     pendingRewardsFunction: "pendingWarden",
-      //     deathPoolIndices: [1]
-      //   });
-    }
-  })()
-
+  useEffect(() => {
+    (async () => {
+      if (web3Provider) {
+        const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
+        const rewardsPerWeek = await calculateRewards(wadContract)
+        setSetContract(wadContract)
+        setRewardsPerWeekFixed(rewardsPerWeek)
+      }
+    })()
+  }, [bscPrices, web3Provider])
 
   return (
     <>

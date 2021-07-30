@@ -4,15 +4,17 @@ import { bscTokens } from '../../chain-config/bsc'
 
 export const useBscPrice = () => {
   const prices = usePrice();
-  const [bscPrices, setBscPrice] = useState<any | null>({})
+  const [bscPrices, setBscPrice] = useState<any | null>(null)
+  console.log("prices:::", prices)
   useEffect(() => {
     if (prices) {
+      let _prices: any = {}
       for (const bt of bscTokens) {
         if (prices[bt.id]) {
-          bscPrices[bt.contract] = prices[bt.id];
+          _prices[bt.contract] = prices[bt.id];
         }
       }
-      setBscPrice(bscPrices)
+      setBscPrice(_prices)
     }
   }, [prices])
   return bscPrices;

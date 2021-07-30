@@ -13,7 +13,7 @@ export const ProtocolList = () => {
             <img
               src="/image/chain/bsc-logo.png"
               alt="Token Icon"
-              className="img-fluid mr-1"
+              className="img-fluid mr-2"
               style={{
                 height: "40px",
               }}
@@ -41,7 +41,7 @@ export const ProtocolList = () => {
             <img
               src="/image/chain/matic-icon.png"
               alt="Token Icon"
-              className="img-fluid mr-1"
+              className="img-fluid mr-2"
               style={{
                 height: "40px",
               }}
