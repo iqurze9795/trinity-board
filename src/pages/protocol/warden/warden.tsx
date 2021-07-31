@@ -25,7 +25,7 @@ export const Warden = () => {
           address,
           walletProvider,
           prices: bscPrices,
-          chef: wadContract,
+          chefContract: wadContract,
           chefAddress: META.CHEF_ADDRESS,
           chefAbi: ABI,
           rewardTokenTicker: "WAD",
