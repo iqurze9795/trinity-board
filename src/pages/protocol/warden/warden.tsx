@@ -3,7 +3,7 @@ import { useWallet } from "../../../hooks/useWallet";
 import { Contract, ethers } from "ethers";
 import { ABI, META } from './config'
 import { useBscPrice } from "../../../hooks/bsc/useBscPrice";
-import { chefContractHelper } from "../../../hooks/bsc/helper/contractHelper";
+import { chefContractHelper } from "../../../hooks/helper/bscContractHelper";
 import { useState } from "react";
 
 const calculateRewards = async (contract: ethers.Contract): Promise<number> => {

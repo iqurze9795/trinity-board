@@ -18,7 +18,7 @@ const AddressForm = () => {
 
   return (
     <Form inline>
-      {address === null || address === '' ? <Button
+      {address === null || address.length === 0 ? <Button
         variant="secondary"
         className="btn-primary ml-2"
         type="button"

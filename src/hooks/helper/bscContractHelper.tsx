@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react"
 import { ethers } from "ethers"
-import { UNI_ABI, ERC20_ABI } from '../../../chain-config/eth'
+import { UNI_ABI, ERC20_ABI } from '../../chain-config/eth'
+import { getPoolPrices } from '../helper/priceHelper'
 interface IChefContract {
   address: string | null,
   walletProvider: any,
@@ -52,10 +53,6 @@ async function getBep20(tokenContract: ethers.Contract, address: string, staking
 export const getBscToken = (address: string | null, provider: any, tokenAddress: string, stakingAddress: string) => {
   const type = window.localStorage.getItem(tokenAddress);
   if (type) return getBscStoredToken(address, provider, tokenAddress, stakingAddress, type);
-}
-
-export const readTokenContractInfo = () => {
-
 }
 
 export const getBscStoredToken = async (address: string | null, provider: any, tokenAddress: string, stakingAddress: string, type: string) => {
@@ -137,7 +134,19 @@ export const getBscPoolInfo = async (address: string | null, provider: any, chef
 }
 
 export const chefContractHelper = async (props: IChefContract): Promise<IChefContractResponse> => {
-  const { walletProvider, address, chefContract, chefAddress, rewardTokenFunction, rewardsPerWeekFixed, rewardsPerBlockFunction, pendingRewardsFunction } = props
+  const {
+    walletProvider,
+    address,
+    prices,
+    chefContract,
+    chefAddress,
+    rewardTokenFunction,
+    rewardsPerWeekFixed,
+    rewardsPerBlockFunction,
+    pendingRewardsFunction,
+    deathPoolIndices
+  } = props
+  console.log("wallet::", walletProvider)
   if (walletProvider) {
     const provider = new ethers.providers.Web3Provider(walletProvider)
     const poolCount = parseInt(await chefContract?.poolLength(), 10);
@@ -158,12 +167,23 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
       )
     }))
     const tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken?.tokens) as never)
-
-    let tokens = {}
+    console.log("tokenAddresses::", tokenAddresses)
+    let tokens = {} as any
     await Promise.all(tokenAddresses.map(async (tokenAddres) => {
       const resp = await getBscToken(address, provider, tokenAddres, chefAddress)
-      console.log("resp::", resp)
+      tokens[tokenAddres] = resp
     }));
+    console.log("token::", tokens)
+
+    // if (deathPoolIndices) {   //load prices for the deathpool assets [single asset staking pool]
+    //   deathPoolIndices.map(i => poolInfos[i])
+    //     .map(poolInfo =>
+    //       poolInfo.poolToken ?
+    //         getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined
+    //     );
+    // }
+    // const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
+
 
   }
 
