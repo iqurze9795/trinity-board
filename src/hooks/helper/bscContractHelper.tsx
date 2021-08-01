@@ -146,7 +146,6 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
     pendingRewardsFunction,
     deathPoolIndices
   } = props
-  console.log("wallet::", walletProvider)
   if (walletProvider) {
     const provider = new ethers.providers.Web3Provider(walletProvider)
     const poolCount = parseInt(await chefContract?.poolLength(), 10);
@@ -167,24 +166,19 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
       )
     }))
     const tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken?.tokens) as never)
-    console.log("tokenAddresses::", tokenAddresses)
     let tokens = {} as any
     await Promise.all(tokenAddresses.map(async (tokenAddres) => {
       const resp = await getBscToken(address, provider, tokenAddres, chefAddress)
       tokens[tokenAddres] = resp
     }));
-    console.log("token::", tokens)
-
-    // if (deathPoolIndices) {   //load prices for the deathpool assets [single asset staking pool]
-    //   deathPoolIndices.map(i => poolInfos[i])
-    //     .map(poolInfo =>
-    //       poolInfo.poolToken ?
-    //         getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined
-    //     );
-    // }
-    // const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
-
-
+    if (deathPoolIndices) {   //load prices for the deathpool assets [single asset staking pool]
+      deathPoolIndices.map(i => poolInfos[i])
+        .map(poolInfo =>
+          poolInfo.poolToken ?
+            getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined
+        );
+    }
+    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
   }
 
   return {} as IChefContractResponse
