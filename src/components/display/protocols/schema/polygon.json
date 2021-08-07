@@ -1,7 +1,7 @@
 [
   {
-    "name": "Pancake",
-    "logo": "/image/protocal/pancake.png",
+    "name": "Quick Swap",
+    "logo": "/image/protocal/quickswap.png",
     "reward": "CAKE",
     "site": "https://pancakeswap.finance",
     "path": "pancake"

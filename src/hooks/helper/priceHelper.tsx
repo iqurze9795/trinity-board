@@ -2,7 +2,7 @@ import { get } from "lodash"
 import { ethers } from "ethers"
 export const getParameterCaseInsensitive = (object: Object, key: string) => {
   const findKey = Object.keys(object).find(k => k.toLowerCase() === key.toLowerCase()) || ""
-  return get(object, [findKey]);
+  return get(object, [`${findKey}`]);
 }
 
 export const getErc20Prices = (prices: any[], pool: ethers.Contract, chain = "eth") => {

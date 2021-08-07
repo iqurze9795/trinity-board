@@ -10,7 +10,7 @@ class AppRouter extends React.Component {
     return (
       <Router history={history}>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Pool} />
           <Route exact path="/pool" component={Pool} />
           <Route exact path="/warden" component={Warden} />
         </Switch>
