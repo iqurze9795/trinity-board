@@ -486,5 +486,6 @@ export const ABI = [
 
 export const META = {
   CHEF_ADDRESS: '0xde866dD77b6DF6772e320dC92BFF0eDDC626C674',
-  TOKEN_SYMBOL: 'WAD'
+  TOKEN_SYMBOL: 'WAD',
+  OFFICIAL_SITE: 'https://www.wardenswap.finance/'
 }

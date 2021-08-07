@@ -1,7 +1,7 @@
 .card {
   border: 0;
   border-radius: 30px;
-  box-shadow: 0 10px 20px 0 rgb(0 0 0 / 5%);
+  box-shadow: 0 10px 20px 0 rgb(0 0 0 / 10%);
 }
 
 body {
@@ -24,6 +24,11 @@ body {
   backdrop-filter: none;
   box-shadow: rgb(0 0 0 / 1%) 16px 1px 14px;
 }
+
+.lp-card {
+  background-color: transparent;
+}
+
 .header-title {
   font-size: 1.2rem;
   color: black;

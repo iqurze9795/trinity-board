@@ -154,10 +154,8 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract?.callStatic[rewardsPerBlockFunction ?? ""]()
       / 10 ** rewardToken?.decimals * 604800 / 3
-    console.log("prices::", prices)
     const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-    console.log("rewardPrice::", rewardPrice)
-    const poolInfos = await Promise.all([...new Array(poolCount)].map(async (x, index) => {
+    let poolInfos = await Promise.all([...new Array(poolCount)].map(async (x, index) => {
       return await getBscPoolInfo(
         address,
         provider,
@@ -170,7 +168,6 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
       return resp.map(item => {
         const poolRewardsPerWeek = item.allocPoints / totalAllocPoints * rewardsPerWeek;
         const userStaked = item.userLPStaked ?? item.userStaked;
-        console.log("rewardTokenAddress::", rewardTokenAddress)
         return {
           ...item,
           poolRewardsPerWeek,
@@ -178,7 +175,6 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
         }
       })
     })
-    console.log("poolInfos", poolInfos)
     const tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken?.tokens) as never)
     let tokens = {} as any
     await Promise.all(tokenAddresses.map(async (tokenAddres) => {
@@ -194,8 +190,11 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
     }
 
     const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
+    poolInfos = poolInfos.map((item, index) => {
+      return { ...item, poolPrice: poolPrices[index], rewardPrice }
+    })
     return {
-      result: poolPrices,
+      result: poolInfos,
       status: "completed"
     } as IChefContractResponse
   }
