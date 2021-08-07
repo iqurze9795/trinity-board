@@ -9,21 +9,6 @@ export const getErc20Prices = (prices: any[], pool: ethers.Contract, chain = "et
   const price = getParameterCaseInsensitive(prices, pool.address)?.usd;
   const tvl = pool.totalSupply * price / 10 ** pool.decimals;
   const stakedTvl = pool.staked * price;
-  let poolUrl;
-  switch (chain) {
-    case "eth":
-      poolUrl = `https://etherscan.io/token/${pool.address}`;
-      break;
-    case "bsc":
-      poolUrl = `https://bscscan.com/token/${pool.address}`;
-      break;
-    case "matic":
-      poolUrl = `https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
-      break;
-    case "kcc":
-      poolUrl = `https://explorer.kcc.io/en/address/${pool.address}`;
-      break;
-  }
   return {
     tvl: tvl,
     stakedTvl: stakedTvl,
