@@ -28,6 +28,6 @@
     "reward": "BSW",
     "path": "biswap",
     "site": "https://biswap.org",
-    "isDisable": true
+    "isDisable": false
   }
 ]
