@@ -50,16 +50,22 @@ export const Warden = () => {
           }).map((item) => {
             const pair = get(item, ["poolPrice", "stakeTokenTicker"], null) !== null ?
               get(item, ["poolPrice", "stakeTokenTicker"]) : `${get(item, ["poolPrice", "t0", "symbol"])}-${get(item, ["poolPrice", "t1", "symbol"])}`
+            const rewardPerWeek = get(item, ["poolRewardsPerWeek"])
+            const rewardPrice = get(item, ["rewardPrice"])
+            const totalStaked = get(item, ["poolToken", "staked"])
+            const weeklyAPR = rewardPerWeek / totalStaked * 100;
+            const dailyAPR = weeklyAPR / 7;
+            const yearlyAPR = weeklyAPR * 52;
             return {
               rewardToken: "WAD",
               poolName: get(item, ["poolToken", "name"]),
               lpPrice: get(item, ["poolPrice", "price"]),
               tvlUsd: get(item, ["poolPrice", "tvl"]),
-              totalStaked: get(item, ["poolToken", "staked"]),
-              rewardPerWeek: get(item, ["poolRewardsPerWeek"]),
-              rewardPrice: get(item, ["rewardPrice"]),
+              totalStaked: totalStaked,
+              rewardPerWeek: rewardPerWeek,
+              rewardPrice: rewardPrice,
               pair: pair,
-              APR: {},
+              APR: { weeklyAPR, dailyAPR, yearlyAPR },
               userStaked: get(item, ["userStaked"])
             }
           })

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import BigNumber from 'bignumber.js'
 
 interface Props {
@@ -62,8 +62,34 @@ const LPCard = ({ lp }: Props) => {
                     {lp.rewardToken} rewards Per Week:
                   </small>
                   <span className="text-info">
-                    {new BigNumber(lp.rewardPerWeek).toFormat(2)} {lp.rewardToken}
+                    {new BigNumber(lp.rewardPerWeek).toFormat(2)} {lp.rewardToken} (${new BigNumber(lp.rewardPerWeek * lp.lpPrice).toFormat(2)})
                   </span>
+                </Row>
+                <Row className="pl-3 pt-2">
+                  <small className="text-label pr-2">
+                    APR:
+                  </small>
+                  <Card
+                    className="btn-card pl-2 pr-2 mr-2"
+                    style={{ minWidth: 70 }}
+                  >
+                    {/* <img className="chain-logo" src={logo}></img> */}
+                    <small className="d-flex justify-content-center">Day: {new BigNumber(lp.APR.dailyAPR).toFormat(2)}%</small>
+                  </Card>
+                  <Card
+                    className="btn-card pl-2 pr-2 mr-2"
+                    style={{ minWidth: 70 }}
+                  >
+                    {/* <img className="chain-logo" src={logo}></img> */}
+                    <small className="d-flex justify-content-center">Week: {new BigNumber(lp.APR.weeklyAPR).toFormat(2)}%</small>
+                  </Card>
+                  <Card
+                    className="btn-card pl-2 pr-2"
+                    style={{ minWidth: 70 }}
+                  >
+                    {/* <img className="chain-logo" src={logo}></img> */}
+                    <small className="d-flex justify-content-center">Year: {new BigNumber(lp.APR.yearlyAPR).toFormat(2)}%</small>
+                  </Card>
                 </Row>
               </div>
 
