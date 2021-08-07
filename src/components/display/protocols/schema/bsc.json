@@ -4,27 +4,30 @@
     "logo": "/image/protocal/pancake.png",
     "reward": "CAKE",
     "path": "/pancake",
-    "site": "https://pancakeswap.finance"
+    "isDisable": true
   },
   {
     "name": "Apeswap",
     "logo": "/image/protocal/apeswap.png",
     "reward": "BANANA",
     "path": "apeswap",
-    "site": "https://apeswap.finance"
+    "site": "https://apeswap.finance",
+    "isDisable": true
   },
   {
     "name": "Warden",
     "logo": "/image/protocal/warden.png",
     "reward": "WAD",
     "path": "warden",
-    "site": "https://www.wardenswap.finance"
+    "site": "https://www.wardenswap.finance",
+    "isDisable": false
   },
   {
     "name": "Biswap",
     "logo": "/image/protocal/biswap.png",
     "reward": "BSW",
     "path": "biswap",
-    "site": "https://biswap.org"
+    "site": "https://biswap.org",
+    "isDisable": true
   }
 ]

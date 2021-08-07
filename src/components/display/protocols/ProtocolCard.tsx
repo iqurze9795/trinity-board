@@ -5,11 +5,11 @@ import { useHistory } from 'react-router-dom';
 interface Props {
   name: string;
   logo: string;
-  site: string;
+  isDisable: boolean;
   path: string;
 }
 
-export const ProtocolCard = ({ name, logo, site, path }: Props) => {
+export const ProtocolCard = ({ name, logo, isDisable, path }: Props) => {
   const history = useHistory();
   const handleOnClick = useCallback(() => history.push(path), [history]);
   return (
@@ -19,6 +19,7 @@ export const ProtocolCard = ({ name, logo, site, path }: Props) => {
         type="button"
         style={{ minWidth: 180 }}
         size="sm"
+        disabled={isDisable}
         onClick={handleOnClick}
       >
         <img className="chain-logo" src={logo}></img>
