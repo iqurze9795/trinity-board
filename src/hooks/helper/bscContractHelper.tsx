@@ -1,6 +1,5 @@
 import { ethers } from "ethers"
 import { UNI_ABI, ERC20_ABI } from '../../chain-config/eth'
-import { getType } from '../../chain-config/address'
 import { getPoolPrices, getParameterCaseInsensitive } from '../helper/priceHelper'
 interface IChefContract {
   address: string | null,
