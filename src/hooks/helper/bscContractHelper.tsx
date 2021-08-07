@@ -1,5 +1,6 @@
 import { ethers } from "ethers"
 import { UNI_ABI, ERC20_ABI } from '../../chain-config/eth'
+import { getType } from '../../chain-config/address'
 import { getPoolPrices, getParameterCaseInsensitive } from '../helper/priceHelper'
 interface IChefContract {
   address: string | null,
@@ -49,7 +50,7 @@ async function getBep20(tokenContract: ethers.Contract, address: string, staking
 }
 
 export const getBscToken = (address: string | null, provider: any, tokenAddress: string, stakingAddress: string) => {
-  const type = window.localStorage.getItem(tokenAddress);
+  const type = getType(tokenAddress);
   if (type) return getBscStoredToken(address, provider, tokenAddress, stakingAddress, type);
 }
 

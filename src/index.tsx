@@ -34,7 +34,7 @@ const providerOptions = {
 
 
 (window as any).web3Modal = new Web3Modal({
-  cacheProvider: true,
+  cacheProvider: false,
   providerOptions
 });
 
