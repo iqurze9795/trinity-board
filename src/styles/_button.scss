@@ -13,6 +13,10 @@
     background: rgb(255, 255, 255, 0.4) !important;
     color: black !important;
   }
+  &:disabled {
+    border: solid 1px;
+    border-color: rgb(255, 255, 255, 0.4);
+  }
 }
 
 .btn-primary {
