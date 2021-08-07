@@ -49,9 +49,26 @@ async function getBep20(tokenContract: ethers.Contract, address: string, staking
   };
 }
 
-export const getBscToken = (address: string | null, provider: any, tokenAddress: string, stakingAddress: string) => {
-  const type = getType(tokenAddress);
+export const getBscToken = async (address: string | null, provider: any, tokenAddress: string, stakingAddress: string) => {
+  const type = window.localStorage.getItem(tokenAddress);
   if (type) return getBscStoredToken(address, provider, tokenAddress, stakingAddress, type);
+  try {
+    const pool = new ethers.Contract(tokenAddress, UNI_ABI, provider);
+    const uniPool = await getBscUniPool(address, pool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "uniswap");
+    return uniPool;
+  }
+  catch (err) {
+  }
+  try {
+    const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
+    const erc20token = await getBep20(erc20, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "erc20");
+    return erc20token;
+  }
+  catch (err) {
+    console.log(`Couldn't match ${tokenAddress} to any known token type.`);
+  }
 }
 
 export const getBscStoredToken = async (address: string | null, provider: any, tokenAddress: string, stakingAddress: string, type: string) => {
