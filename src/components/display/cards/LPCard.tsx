@@ -41,17 +41,17 @@ const LPCard = ({ lp }: Props) => {
                     ${new BigNumber(lp.lpPrice).toFormat(2)}
                   </span>
                 </Row>
-                <Row className="pl-3">
+                {/* <Row className="pl-3">
                   <small className="text-label pr-2">
                     TVL:
                   </small>
                   <span className="text-info">
                     ${new BigNumber(lp.tvlUsd).toFormat(2)}
                   </span>
-                </Row>
+                </Row> */}
                 <Row className="pl-3">
                   <small className="text-label pr-2">
-                    Staked:
+                    Total Staked:
                   </small>
                   <span className="text-info">
                     {new BigNumber(lp.totalStaked).toFormat(2)} (${new BigNumber(lp.totalStaked * lp.lpPrice).toFormat(2)})
@@ -62,7 +62,7 @@ const LPCard = ({ lp }: Props) => {
                     {lp.rewardToken} rewards Per Week:
                   </small>
                   <span className="text-info">
-                    {new BigNumber(lp.rewardPerWeek).toFormat(2)} {lp.rewardToken} (${new BigNumber(lp.rewardPerWeek * lp.lpPrice).toFormat(2)})
+                    {new BigNumber(lp.rewardPerWeek).toFormat(2)} {lp.rewardToken} (${new BigNumber(lp.rewardPerWeek * lp.rewardPrice).toFormat(2)})
                   </span>
                 </Row>
                 <Row className="pl-3 pt-2">
