@@ -22,7 +22,7 @@ const LPCard = ({ lp }: Props) => {
           <Col md={12} lg={12}>
             <div className="d-flex align-items-start justify-content-lg-start justify-content-center ml-0 ml-lg-4 mb-2">
               <div style={{ minWidth: 120 }}>
-                <img src={`/image/pair/${lp.pair.toLowerCase()}.png`} alt="" />
+                <img onError={(ev) => { ev.currentTarget.src = "/image/pair/unknown-pair.png" }} src={`/image/pair/${lp.pair.toLowerCase()}.png`} alt="" />
               </div>
               <div
                 className="d-flex align-items-center align-items-lg-start flex-column ml-3"

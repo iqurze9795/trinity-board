@@ -48,14 +48,13 @@ export const Warden = () => {
           const formattedResult = result.filter(item => {
             return item.poolToken
           }).map((item) => {
-            
+
             const pair = get(item, ["poolPrice", "stakeTokenTicker"], null) !== null ?
               get(item, ["poolPrice", "stakeTokenTicker"]) : `${get(item, ["poolPrice", "t0", "symbol"])}-${get(item, ["poolPrice", "t1", "symbol"])}`
             const rewardPerWeek = get(item, ["poolRewardsPerWeek"])
             const rewardPrice = get(item, ["rewardPrice"])
             const lpPrice = get(item, ["poolPrice", "price"])
             const totalStaked = get(item, ["poolToken", "staked"])
-            console.log("rewardPrice::",rewardPrice,"totalStaked::",totalStaked)
             const weeklyAPR = (rewardPerWeek * rewardPrice) / (totalStaked * lpPrice) * 100;
             const dailyAPR = weeklyAPR / 7;
             const yearlyAPR = weeklyAPR * 52;
