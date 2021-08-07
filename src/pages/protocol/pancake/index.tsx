@@ -12,11 +12,11 @@ import { Card, Row, Col, Spinner, Form } from "react-bootstrap";
 import LPCard from "../../../components/display/cards/LPCard";
 
 const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
-  return await contract.BSWPerBlock() / 1e18
+  return await contract.cakePerBlock() / 1e18
     * 604800 / 3;
 }
 
-export const Biswap = () => {
+export const Cake = () => {
   const { web3Provider, walletProvider, address } = useWallet();
   const [pool, setPool] = useState<Array<object>>([])
   const [isLoading, setLoading] = useState<boolean>(false)
@@ -35,14 +35,14 @@ export const Biswap = () => {
           chefContract: wadContract,
           chefAddress: META.CHEF_ADDRESS,
           chefAbi: ABI,
-          rewardTokenTicker: "BSW",
-          rewardTokenFunction: "BSW",
+          rewardTokenTicker: "CAKE",
+          rewardTokenFunction: "cake",
           rewardsPerBlockFunction: null,
           rewardsPerWeekFixed: rewardsPerWeek,
-          pendingRewardsFunction: "pendingBSW",
+          pendingRewardsFunction: "pendingCake",
           deathPoolIndices: [1]
         });
-        console.log("response::",response)
+        console.log("response::", response)
         if (response.status === "completed") {
           const { result } = response
           const formattedResult = result.filter(item => {
@@ -53,13 +53,13 @@ export const Biswap = () => {
               get(item, ["poolPrice", "stakeTokenTicker"]) : `${get(item, ["poolPrice", "t0", "symbol"])}-${get(item, ["poolPrice", "t1", "symbol"])}`
             const rewardPerWeek = get(item, ["poolRewardsPerWeek"])
             const rewardPrice = get(item, ["rewardPrice"])
-            const lpPrice = get(item, ["poolPrice", "price"])
+            const lpPrice = get(item, ["poolPrice", "price"]) || rewardPrice
             const totalStaked = get(item, ["poolToken", "staked"])
             const weeklyAPR = (rewardPerWeek * rewardPrice) / (totalStaked * lpPrice) * 100;
             const dailyAPR = weeklyAPR / 7;
             const yearlyAPR = weeklyAPR * 52;
             return {
-              rewardToken: "BSW",
+              rewardToken: "CAKE",
               poolName: get(item, ["poolToken", "name"]),
               lpPrice: lpPrice,
               tvlUsd: get(item, ["poolPrice", "tvl"]),
@@ -83,7 +83,7 @@ export const Biswap = () => {
         <Row>
           <div className="d-flex align-items-center">
             <img
-              src="/image/protocal/biswap.png"
+              src="/image/protocal/pancake.png"
               alt="Token Icon"
               className="img-fluid mr-2"
               style={{
@@ -92,7 +92,7 @@ export const Biswap = () => {
             />
             <span className="header-title">
               <a href={META.OFFICIAL_SITE} target="_blank" style={{ color: "black" }}>
-                Biswap Swap
+                Pancake swap
               </a>
             </span>
           </div>

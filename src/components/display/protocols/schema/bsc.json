@@ -4,7 +4,7 @@
     "logo": "/image/protocal/pancake.png",
     "reward": "CAKE",
     "path": "/pancake",
-    "isDisable": true
+    "isDisable": false
   },
   {
     "name": "Apeswap",
