@@ -27,7 +27,8 @@ const LPCard = ({ lp }: Props) => {
               <div
                 className="d-flex align-items-center align-items-lg-start flex-column ml-3"
                 style={{
-                  fontWeight: 300,
+                  color: "white",
+                  fontWeight: "bold",
                 }}
               >
                 {lp.pair}
