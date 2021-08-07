@@ -24,10 +24,10 @@ export const Biswap = () => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true)
       if (web3Provider && bscPrices) {
         const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
         const rewardsPerWeek = await calculateRewards(wadContract)
-        setLoading(true)
         const response = await chefContractHelper({
           address,
           walletProvider,

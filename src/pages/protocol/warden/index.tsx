@@ -25,6 +25,7 @@ export const Warden = () => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true)
       if (web3Provider && bscPrices) {
         const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
         const rewardsPerWeek = await calculateRewards(wadContract)

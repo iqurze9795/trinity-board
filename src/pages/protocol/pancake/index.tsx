@@ -24,6 +24,7 @@ export const Cake = () => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true)
       if (web3Provider && bscPrices) {
         const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
         const rewardsPerWeek = await calculateRewards(wadContract)
@@ -42,7 +43,6 @@ export const Cake = () => {
           pendingRewardsFunction: "pendingCake",
           deathPoolIndices: [1]
         });
-        console.log("response::", response)
         if (response.status === "completed") {
           const { result } = response
           const formattedResult = result.filter(item => {
