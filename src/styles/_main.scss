@@ -11,6 +11,12 @@ body {
     'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !important;
 }
+.divider {
+  width: 200px;
+  height: 1px;
+  background: white;
+  opacity: 20%;
+}
 
 .glass {
   will-change: transform;

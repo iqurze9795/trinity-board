@@ -6,7 +6,7 @@ import { useBscPrice } from "../../../hooks/bsc/useBscPrice";
 import { chefContractHelper } from "../../../hooks/helper/bscContractHelper";
 import { useState } from "react";
 import { get } from "lodash";
-import { Card, Row, Col, Spinner } from "react-bootstrap";
+import { Card, Row, Col, Spinner, Form } from "react-bootstrap";
 
 //component
 import LPCard from "../../../components/display/cards/LPCard";
@@ -45,14 +45,20 @@ export const Warden = () => {
         });
         if (response.status === "completed") {
           const { result } = response
-          const formattedResult = result.map((item) => {
+          const formattedResult = result.filter(item => {
+            return item.poolToken
+          }).map((item) => {
+            const pair = get(item, ["poolPrice", "stakeTokenTicker"], null) !== null ?
+              get(item, ["poolPrice", "stakeTokenTicker"]) : `${get(item, ["poolPrice", "t0", "symbol"])}-${get(item, ["poolPrice", "t1", "symbol"])}`
             return {
+              rewardToken: "WAD",
               poolName: get(item, ["poolToken", "name"]),
               lpPrice: get(item, ["poolPrice", "price"]),
               tvlUsd: get(item, ["poolPrice", "tvl"]),
-              totalStaked: get(item, ["poolPrice", "tvl"]),
+              totalStaked: get(item, ["poolToken", "staked"]),
               rewardPerWeek: get(item, ["poolRewardsPerWeek"]),
               rewardPrice: get(item, ["rewardPrice"]),
+              pair: pair,
               APR: {},
               userStaked: get(item, ["userStaked"])
             }
@@ -82,6 +88,14 @@ export const Warden = () => {
               </a>
             </span>
           </div>
+          <div className="ml-4 d-flex align-items-center">
+            <Form >
+              <Form.Check
+                type="checkbox"
+                label="Hide Unstake LP"
+              />
+            </Form>
+          </div>
         </Row>
         {isLoading ? (
           <>
@@ -97,7 +111,7 @@ export const Warden = () => {
             {pool.map((item, index) => {
               return (
                 <Col key={index} md="12" style={{ marginBottom: 10 }} >
-                  <LPCard lp={{}} ></LPCard>
+                  <LPCard lp={item} ></LPCard>
                 </Col>)
             })}
           </Row>

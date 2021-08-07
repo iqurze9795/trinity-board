@@ -1,12 +1,13 @@
 import React, { useMemo } from "react";
 import { Card, Row, Col } from "react-bootstrap";
+import BigNumber from 'bignumber.js'
 
 interface Props {
   lp: any;
 }
 
 const LPCard = ({ lp }: Props) => {
-
+  console.log("lp::::", lp)
   const poolName = useMemo(() => {
     if (lp.token1Symbol === "") return `${lp.token0Symbol} LP`;
     else return `${lp.token1Symbol}-${lp.token0Symbol} LP`;
@@ -19,22 +20,24 @@ const LPCard = ({ lp }: Props) => {
       <Card.Body>
         <Row>
           <Col md={12} lg={12}>
-            <div className="d-flex align-items-start justify-content-lg-start justify-content-center ml-0 ml-lg-4">
-              <img src="/image/pair/wad-bnb.png" alt="" />
+            <div className="d-flex align-items-start justify-content-lg-start justify-content-center ml-0 ml-lg-4 mb-2">
+              <div style={{ minWidth: 120 }}>
+                <img src={`/image/pair/${lp.pair.toLowerCase()}.png`} alt="" />
+              </div>
               <div
                 className="d-flex align-items-center align-items-lg-start flex-column ml-3"
                 style={{
                   fontWeight: 300,
                 }}
               >
-                Warden-BNB
+                {lp.pair}
                 <br />
                 <Row className="pl-3">
                   <small className="text-label pr-2">
                     LP Price:
                   </small>
                   <span className="text-info">
-                    $26.30
+                    ${new BigNumber(lp.lpPrice).toFormat(2)}
                   </span>
                 </Row>
                 <Row className="pl-3">
@@ -42,7 +45,7 @@ const LPCard = ({ lp }: Props) => {
                     TVL:
                   </small>
                   <span className="text-info">
-                    $11,443,608.37
+                    ${new BigNumber(lp.tvlUsd).toFormat(2)}
                   </span>
                 </Row>
                 <Row className="pl-3">
@@ -50,18 +53,19 @@ const LPCard = ({ lp }: Props) => {
                     Staked:
                   </small>
                   <span className="text-info">
-                    16095368.9797 Warden ($6,724,837.87)
+                    {new BigNumber(lp.totalStaked).toFormat(2)} (${new BigNumber(lp.totalStaked * lp.lpPrice).toFormat(2)})
                   </span>
                 </Row>
                 <Row className="pl-3">
                   <small className="text-label pr-2">
-                    WAD Per Week:
+                    {lp.rewardToken} rewards Per Week:
                   </small>
                   <span className="text-info">
-                    61714.29 ($25,784.97)
+                    {new BigNumber(lp.rewardPerWeek).toFormat(2)} {lp.rewardToken}
                   </span>
                 </Row>
               </div>
+
             </div>
             <hr className="d-lg-none d-block" />
           </Col>
