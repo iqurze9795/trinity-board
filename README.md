@@ -1,5 +1,5 @@
 # Trinity Board
-
+![](public/example.png)
 ---
 
 ## Available Scripts
