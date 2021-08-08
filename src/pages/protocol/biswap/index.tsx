@@ -17,7 +17,7 @@ const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
 }
 
 export const Biswap = () => {
-  const { web3Provider, walletProvider, address } = useWallet();
+  const { web3Provider, address } = useWallet();
   const [pool, setPool] = useState<Array<object>>([])
   const [isLoading, setLoading] = useState<boolean>(false)
   const bscPrices = useBscPrice();
@@ -26,13 +26,13 @@ export const Biswap = () => {
     (async () => {
       setLoading(true)
       if (web3Provider && bscPrices) {
-        const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
-        const rewardsPerWeek = await calculateRewards(wadContract)
+        const biswapContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
+        const rewardsPerWeek = await calculateRewards(biswapContract)
         const response = await chefContractHelper({
           address,
-          walletProvider,
+          provider: web3Provider,
           prices: bscPrices,
-          chefContract: wadContract,
+          chefContract: biswapContract,
           chefAddress: META.CHEF_ADDRESS,
           chefAbi: ABI,
           rewardTokenTicker: "BSW",

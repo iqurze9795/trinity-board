@@ -3,7 +3,7 @@ import { UNI_ABI, ERC20_ABI } from '../../chain-config/eth'
 import { getPoolPrices, getParameterCaseInsensitive } from '../helper/priceHelper'
 interface IChefContract {
   address: string | null,
-  walletProvider: any,
+  provider: any,
   prices: object[],
   chefContract: ethers.Contract | null,
   chefAddress: string,
@@ -150,7 +150,7 @@ export const getBscPoolInfo = async (address: string | null, provider: any, chef
 
 export const chefContractHelper = async (props: IChefContract): Promise<IChefContractResponse> => {
   const {
-    walletProvider,
+    provider,
     address,
     prices,
     chefContract,
@@ -161,9 +161,7 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
     pendingRewardsFunction,
     deathPoolIndices
   } = props
-  console.log("wallet provider::", walletProvider)
-  if (walletProvider) {
-    const provider = new ethers.providers.Web3Provider(walletProvider)
+  if (provider) {
     const poolCount = parseInt(await chefContract?.poolLength(), 10);
     const totalAllocPoints = await chefContract?.totalAllocPoint();
     const rewardTokenAddress = await chefContract?.callStatic[rewardTokenFunction]();

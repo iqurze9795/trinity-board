@@ -18,7 +18,7 @@ const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
 }
 
 export const Warden = () => {
-  const { web3Provider, walletProvider, address } = useWallet();
+  const { web3Provider, address } = useWallet();
   const [pool, setPool] = useState<Array<object>>([])
   const [isLoading, setLoading] = useState<boolean>(false)
   const bscPrices = useBscPrice();
@@ -32,7 +32,7 @@ export const Warden = () => {
         setLoading(true)
         const response = await chefContractHelper({
           address,
-          walletProvider,
+          provider: web3Provider,
           prices: bscPrices,
           chefContract: wadContract,
           chefAddress: META.CHEF_ADDRESS,

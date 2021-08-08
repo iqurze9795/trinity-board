@@ -17,7 +17,7 @@ const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
 }
 
 export const Cake = () => {
-  const { web3Provider, walletProvider, address } = useWallet();
+  const { web3Provider, address } = useWallet();
   const [pool, setPool] = useState<Array<object>>([])
   const [isLoading, setLoading] = useState<boolean>(false)
   const bscPrices = useBscPrice();
@@ -26,14 +26,14 @@ export const Cake = () => {
     (async () => {
       setLoading(true)
       if (web3Provider && bscPrices) {
-        const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
-        const rewardsPerWeek = await calculateRewards(wadContract)
+        const pancakeContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
+        const rewardsPerWeek = await calculateRewards(pancakeContract)
         setLoading(true)
         const response = await chefContractHelper({
           address,
-          walletProvider,
+          provider: web3Provider,
           prices: bscPrices,
-          chefContract: wadContract,
+          chefContract: pancakeContract,
           chefAddress: META.CHEF_ADDRESS,
           chefAbi: ABI,
           rewardTokenTicker: "CAKE",

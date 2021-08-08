@@ -10,7 +10,6 @@ import { ethers } from "ethers";
 
 
 interface IWalletProps {
-  walletProvider: any | null;
   web3Provider: any | null,
   address: string | null,
   networkInfo: any | null,
@@ -20,7 +19,6 @@ interface IWalletProps {
 
 const WalletContext = createContext({} as IWalletProps);
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const [walletProvider, setWalletProvider] = useState<any | null>(null);
   const [web3Provider, setWeb3Provider] = useState<any | null>(null);
   const [address, setAddress] = useState<any | null>(null)
   const [networkInfo, setNetworkInfo] = useState<any | null>(null)
@@ -31,7 +29,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     (async () => {
       await connectWallet()
     })()
-  }, [setWalletProvider]);
+  }, []);
 
   const onInitAccountInfo = async (provider: any) => {
     const web3Provider = new ethers.providers.Web3Provider(provider)
@@ -66,8 +64,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       const result = await web3Modal.connect()
       await subscribeProvider(result)
       await onInitAccountInfo(result)
-
-      setWalletProvider(result)
     } catch (e) {
       console.log("Could not get a wallet connection", e);
       return;
@@ -79,7 +75,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         address,
         networkInfo,
         web3Provider,
-        walletProvider,
         connectWallet: connectWallet,
       }}
     >
