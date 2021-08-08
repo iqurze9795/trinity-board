@@ -121,7 +121,7 @@ export const getBscUniPool = async (address: string | null, poolContract: ethers
  */
 export const getBscPoolInfo = async (address: string | null, provider: any, chefContract: ethers.Contract | null, chefAddress: string, poolIndex: number, pendingRewardsFunction: string) => {
   const poolInfo = await chefContract?.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0 || poolIndex == 105) {
+  if (poolInfo.allocPoint == 0) {
     return {
       address: poolInfo.lpToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
