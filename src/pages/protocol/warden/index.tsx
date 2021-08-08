@@ -10,6 +10,7 @@ import { Card, Row, Col, Spinner, Form } from "react-bootstrap";
 
 //component
 import LPCard from "../../../components/display/cards/LPCard";
+import TVLCard from "../../../components/display/cards/TVLCard";
 
 const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
   const multiplier = await contract.BONUS_MULTIPLIER();
@@ -20,12 +21,14 @@ const calculateRewards = async (contract: ethers.Contract): Promise<number> => {
 export const Warden = () => {
   const { web3Provider, address } = useWallet();
   const [pool, setPool] = useState<Array<object>>([])
+  const [tvl, setTvl] = useState<number>(0)
   const [isLoading, setLoading] = useState<boolean>(false)
   const bscPrices = useBscPrice();
 
   useEffect(() => {
     (async () => {
       setLoading(true)
+      console.log("use effect call")
       if (web3Provider && bscPrices) {
         const wadContract = new ethers.Contract(META.CHEF_ADDRESS, ABI, web3Provider);
         const rewardsPerWeek = await calculateRewards(wadContract)
@@ -46,10 +49,10 @@ export const Warden = () => {
         });
         if (response.status === "completed") {
           const { result } = response
+          let tvl = 0;
           const formattedResult = result.filter(item => {
             return item.poolToken
           }).map((item) => {
-
             const pair = get(item, ["poolPrice", "stakeTokenTicker"], null) !== null ?
               get(item, ["poolPrice", "stakeTokenTicker"]) : `${get(item, ["poolPrice", "t0", "symbol"])}-${get(item, ["poolPrice", "t1", "symbol"])}`
             const rewardPerWeek = get(item, ["poolRewardsPerWeek"])
@@ -59,6 +62,7 @@ export const Warden = () => {
             const weeklyAPR = (rewardPerWeek * rewardPrice) / (totalStaked * lpPrice) * 100;
             const dailyAPR = weeklyAPR / 7;
             const yearlyAPR = weeklyAPR * 52;
+            tvl += (totalStaked * lpPrice)
             return {
               rewardToken: "WAD",
               poolName: get(item, ["poolToken", "name"]),
@@ -72,6 +76,7 @@ export const Warden = () => {
               userStaked: get(item, ["userStaked"])
             }
           })
+          setTvl(tvl)
           setPool(formattedResult)
           setLoading(false)
         }
@@ -80,6 +85,9 @@ export const Warden = () => {
   }, [bscPrices, web3Provider])
   return (
     <>
+      {/* <Col md={6} lg={6}>
+        <TVLCard {...{ tvl: tvl, userStake: 1000 }} />
+      </Col> */}
       <Card className="glass" style={{ padding: 30, marginBottom: 20 }}>
         <Row>
           <div className="d-flex align-items-center">
@@ -116,14 +124,16 @@ export const Warden = () => {
             </div>
           </>
         ) : (
-          <Row style={{ padding: 15 }}>
-            {pool.map((item, index) => {
-              return (
-                <Col key={index} md="12" style={{ marginBottom: 10 }} >
-                  <LPCard lp={item} ></LPCard>
-                </Col>)
-            })}
-          </Row>
+          <>
+            <Row style={{ padding: 15 }}>
+              {pool.map((item, index) => {
+                return (
+                  <Col key={index} md="12" style={{ marginBottom: 10 }} >
+                    <LPCard lp={item} ></LPCard>
+                  </Col>)
+              })}
+            </Row>
+          </>
         )}
       </Card>
     </>

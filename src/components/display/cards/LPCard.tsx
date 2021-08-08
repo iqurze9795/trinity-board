@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-import { Card, Row, Col, Button } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import BigNumber from 'bignumber.js'
 
 interface Props {
@@ -7,12 +6,6 @@ interface Props {
 }
 
 const LPCard = ({ lp }: Props) => {
-  console.log("lp::::", lp)
-  const poolName = useMemo(() => {
-    if (lp.token1Symbol === "") return `${lp.token0Symbol} LP`;
-    else return `${lp.token1Symbol}-${lp.token0Symbol} LP`;
-  }, [lp]);
-
   return (
     <Card
       className="mb-4 fade-list lp-card"
@@ -51,10 +44,10 @@ const LPCard = ({ lp }: Props) => {
                 </Row> */}
                 <Row className="pl-3">
                   <small className="text-label pr-2">
-                    Total Staked:
+                    Pool size:
                   </small>
                   <span className="text-info">
-                    {new BigNumber(lp.totalStaked).toFormat(2)} (${new BigNumber(lp.totalStaked * lp.lpPrice).toFormat(2)})
+                    {new BigNumber(lp.totalStaked).toFormat(2)} LP (${new BigNumber(lp.totalStaked * lp.lpPrice).toFormat(2)})
                   </span>
                 </Row>
                 <Row className="pl-3">
