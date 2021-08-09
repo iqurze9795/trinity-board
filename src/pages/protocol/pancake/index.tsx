@@ -34,7 +34,7 @@ export const Cake = () => {
           provider: web3Provider,
           prices: bscPrices,
           chefContract: pancakeContract,
-          chefAddress: META.CHEF_ADDRESS,
+          chefContractAddress: META.CHEF_ADDRESS,
           chefAbi: ABI,
           rewardTokenTicker: "CAKE",
           rewardTokenFunction: "cake",

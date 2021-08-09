@@ -33,7 +33,7 @@ export const Biswap = () => {
           provider: web3Provider,
           prices: bscPrices,
           chefContract: biswapContract,
-          chefAddress: META.CHEF_ADDRESS,
+          chefContractAddress: META.CHEF_ADDRESS,
           chefAbi: ABI,
           rewardTokenTicker: "BSW",
           rewardTokenFunction: "BSW",

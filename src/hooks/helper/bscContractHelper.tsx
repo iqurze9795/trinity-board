@@ -6,7 +6,7 @@ interface IChefContract {
   provider: any,
   prices: object[],
   chefContract: ethers.Contract | null,
-  chefAddress: string,
+  chefContractAddress: string,
   chefAbi: object[],
   rewardTokenTicker: string,
   rewardTokenFunction: string,
@@ -20,7 +20,7 @@ interface IChefContractResponse {
   status: string
 }
 
-async function getBep20(tokenContract: ethers.Contract, address: string, stakingAddress: string) {
+async function getBep20(tokenContract: ethers.Contract, address: string, chefContractAddress: string) {
   if (address == "0x0000000000000000000000000000000000000000") {
     return {
       address,
@@ -41,19 +41,19 @@ async function getBep20(tokenContract: ethers.Contract, address: string, staking
     symbol: await tokenContract.symbol(),
     totalSupply: await tokenContract.totalSupply(),
     decimals: decimals,
-    staked: await tokenContract.balanceOf(stakingAddress) / 10 ** decimals,
+    staked: await tokenContract.balanceOf(chefContractAddress) / 10 ** decimals,
     unstaked: await tokenContract.balanceOf(address) / 10 ** decimals,
     contract: tokenContract,
     tokens: [address]
   };
 }
 
-export const getBscToken = async (address: string | null, provider: any, tokenAddress: string, stakingAddress: string) => {
+export const getBscToken = async (address: string | null, provider: any, tokenAddress: string, chefContractAddress: string) => {
   const type = window.localStorage.getItem(tokenAddress);
-  if (type) return getBscStoredToken(address, provider, tokenAddress, stakingAddress, type);
+  if (type) return getBscStoredToken(address, provider, tokenAddress, chefContractAddress, type);
   try {
     const pool = new ethers.Contract(tokenAddress, UNI_ABI, provider);
-    const uniPool = await getBscUniPool(address, pool, tokenAddress, stakingAddress);
+    const uniPool = await getBscUniPool(address, pool, tokenAddress, chefContractAddress);
     window.localStorage.setItem(tokenAddress, "uniswap");
     return uniPool;
   }
@@ -61,7 +61,7 @@ export const getBscToken = async (address: string | null, provider: any, tokenAd
   }
   try {
     const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
-    const erc20token = await getBep20(erc20, tokenAddress, stakingAddress);
+    const erc20token = await getBep20(erc20, tokenAddress, chefContractAddress);
     window.localStorage.setItem(tokenAddress, "erc20");
     return erc20token;
   }
@@ -70,18 +70,18 @@ export const getBscToken = async (address: string | null, provider: any, tokenAd
   }
 }
 
-export const getBscStoredToken = async (address: string | null, provider: any, tokenAddress: string, stakingAddress: string, type: string) => {
+export const getBscStoredToken = async (address: string | null, provider: any, tokenAddress: string, chefContractAddress: string, type: string) => {
   switch (type) {
     case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, provider);
-      return await getBscUniPool(address, pool, tokenAddress, stakingAddress);
+      return await getBscUniPool(address, pool, tokenAddress, chefContractAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
-      return await getBep20(erc20, tokenAddress, stakingAddress);
+      return await getBep20(erc20, tokenAddress, chefContractAddress);
   }
 }
 
-export const getBscUniPool = async (address: string | null, poolContract: ethers.Contract, poolAddress: string, stakingAddress: string) => {
+export const getBscUniPool = async (address: string | null, poolContract: ethers.Contract, poolAddress: string, chefContractAddress: string) => {
   let q0, q1;
   const reserves = await poolContract.getReserves();
   q0 = reserves._reserve0;
@@ -98,8 +98,8 @@ export const getBscUniPool = async (address: string | null, poolContract: ethers
     token1,
     q1,
     totalSupply: await poolContract.totalSupply() / 10 ** decimals,
-    stakingAddress: stakingAddress,
-    staked: await poolContract.balanceOf(stakingAddress) / 10 ** decimals,
+    chefContractAddress: chefContractAddress,
+    staked: await poolContract.balanceOf(chefContractAddress) / 10 ** decimals,
     decimals: decimals,
     unstaked: await poolContract.balanceOf(address) / 10 ** decimals,
     contract: poolContract,
@@ -114,12 +114,12 @@ export const getBscUniPool = async (address: string | null, poolContract: ethers
  * @param address //User address
  * @param provider //Web3Provider Object
  * @param chefContract //ether.Contract obejct 
- * @param chefAddress //Masterchef address
+ * @param chefContractAddress //Masterchef address
  * @param poolIndex  //Index of pool
  * @param pendingRewardsFunction //Contract function which use to call pending rewards
  * @returns 
  */
-export const getBscPoolInfo = async (address: string | null, provider: any, chefContract: ethers.Contract | null, chefAddress: string, poolIndex: number, pendingRewardsFunction: string) => {
+export const getBscPoolInfo = async (address: string | null, provider: any, chefContract: ethers.Contract | null, chefContractAddress: string, poolIndex: number, pendingRewardsFunction: string) => {
   const poolInfo = await chefContract?.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
@@ -133,7 +133,7 @@ export const getBscPoolInfo = async (address: string | null, provider: any, chef
       lastRewardBlock: poolInfo.lastRewardBlock
     };
   }
-  const poolToken = await getBscToken(address, provider, poolInfo.lpToken ?? poolInfo.token, chefAddress);
+  const poolToken = await getBscToken(address, provider, poolInfo.lpToken ?? poolInfo.token, chefContractAddress);
   const userInfo = await chefContract?.userInfo(poolIndex, address);
   const pendingRewardTokens = await chefContract?.callStatic[pendingRewardsFunction](poolIndex, address);
   const staked = userInfo.amount / 10 ** poolToken?.decimals;
@@ -154,7 +154,7 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
     address,
     prices,
     chefContract,
-    chefAddress,
+    chefContractAddress,
     rewardTokenFunction,
     rewardsPerWeekFixed,
     rewardsPerBlockFunction,
@@ -165,7 +165,7 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
     const poolCount = parseInt(await chefContract?.poolLength(), 10);
     const totalAllocPoints = await chefContract?.totalAllocPoint();
     const rewardTokenAddress = await chefContract?.callStatic[rewardTokenFunction]();
-    const rewardToken = await getBscToken(address, provider, rewardTokenAddress, chefAddress);
+    const rewardToken = await getBscToken(address, provider, rewardTokenAddress, chefContractAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract?.callStatic[rewardsPerBlockFunction ?? ""]()
       / 10 ** rewardToken?.decimals * 604800 / 3
@@ -175,7 +175,7 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
         address,
         provider,
         chefContract,
-        chefAddress,
+        chefContractAddress,
         index,
         pendingRewardsFunction
       )
@@ -193,7 +193,7 @@ export const chefContractHelper = async (props: IChefContract): Promise<IChefCon
     const tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken?.tokens) as never)
     let tokens = {} as any
     await Promise.all(tokenAddresses.map(async (tokenAddres) => {
-      const resp = await getBscToken(address, provider, tokenAddres, chefAddress)
+      const resp = await getBscToken(address, provider, tokenAddres, chefContractAddress)
       tokens[tokenAddres] = resp
     }));
     if (deathPoolIndices) {   //load prices for the deathpool assets [single asset staking pool]
