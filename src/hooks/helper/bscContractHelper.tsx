@@ -20,10 +20,10 @@ interface IChefContractResponse {
   status: string
 }
 
-async function getBep20(tokenContract: ethers.Contract, address: string, chefContractAddress: string) {
-  if (address == "0x0000000000000000000000000000000000000000") {
+async function getBep20(tokenContract: ethers.Contract, tokenAddress: string, chefContractAddress: string) {
+  if (tokenAddress == "0x0000000000000000000000000000000000000000") {
     return {
-      address,
+      address: tokenAddress,
       name: "Binance",
       symbol: "BNB",
       totalSupply: 1e8,
@@ -31,20 +31,20 @@ async function getBep20(tokenContract: ethers.Contract, address: string, chefCon
       staked: 0,
       unstaked: 0,
       contract: null,
-      tokens: [address]
+      tokens: [tokenAddress]
     }
   }
   const decimals = await tokenContract.decimals()
   return {
-    address,
+    address: tokenAddress,
     name: await tokenContract.name(),
     symbol: await tokenContract.symbol(),
     totalSupply: await tokenContract.totalSupply(),
     decimals: decimals,
     staked: await tokenContract.balanceOf(chefContractAddress) / 10 ** decimals,
-    unstaked: await tokenContract.balanceOf(address) / 10 ** decimals,
+    unstaked: await tokenContract.balanceOf(tokenAddress) / 10 ** decimals,
     contract: tokenContract,
-    tokens: [address]
+    tokens: [tokenAddress]
   };
 }
 
@@ -81,7 +81,7 @@ export const getBscStoredToken = async (address: string | null, provider: any, t
   }
 }
 
-export const getBscUniPool = async (address: string | null, poolContract: ethers.Contract, poolAddress: string, chefContractAddress: string) => {
+export const getBscUniPool = async (address: string | null, poolContract: ethers.Contract, lpTokenAddress: string, chefContractAddress: string) => {
   let q0, q1;
   const reserves = await poolContract.getReserves();
   q0 = reserves._reserve0;
@@ -92,7 +92,7 @@ export const getBscUniPool = async (address: string | null, poolContract: ethers
   return {
     symbol: await poolContract.symbol(),
     name: await poolContract.name(),
-    address: poolAddress,
+    address: lpTokenAddress,
     token0,
     q0,
     token1,
