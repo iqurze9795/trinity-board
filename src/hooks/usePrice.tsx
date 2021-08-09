@@ -10,7 +10,7 @@ export const usePrice = () => {
       const tokens = bscTokens.map((x: any) => x.id)
       const chunk: any = (arr: any, n: number) => arr.length ? [arr.slice(0, n), ...chunk(arr.slice(n), n)] : []
       const prices: any = {}
-      for (const id_chunk of chunk(tokens, 50)) {
+      for (const id_chunk of chunk(tokens, 10)) {
         let ids = id_chunk.join('%2C')
         try {
           const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd')

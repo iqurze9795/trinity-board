@@ -42,13 +42,11 @@ export const Biswap = () => {
           pendingRewardsFunction: "pendingBSW",
           deathPoolIndices: [1]
         });
-        console.log("response::", response)
         if (response.status === "completed") {
           const { result } = response
           const formattedResult = result.filter(item => {
             return item.poolToken
           }).map((item) => {
-            console.log("item::", item)
             const pair = get(item, ["poolPrice", "stakeTokenTicker"], null) !== null ?
               get(item, ["poolPrice", "stakeTokenTicker"]) : `${get(item, ["poolPrice", "t0", "symbol"])}-${get(item, ["poolPrice", "t1", "symbol"])}`
             const rewardPerWeek = get(item, ["poolRewardsPerWeek"])

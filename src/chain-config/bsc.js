@@ -1186,8 +1186,8 @@ export const bscTokens = [
     contract: '0x0fEAdcC3824E7F3c12f40E324a60c23cA51627fc'
   },
   {
-    id: 'bsw',
+    id: 'biswap',
     sysbol: 'BSW',
-    contract: '"0x965F527D9159dCe6288a2219DB51fc6Eef120dD1"'
+    contract: '0x965F527D9159dCe6288a2219DB51fc6Eef120dD1'
   }
 ]
