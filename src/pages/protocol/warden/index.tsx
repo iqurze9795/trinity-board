@@ -118,8 +118,8 @@ export const Warden = () => {
           <>
             <div className="d-flex justify-content-center align-items-center w-100 mt-5 mb-4">
               <div className="d-flex align-items-center">
-                <Spinner animation="border" />
-                <span className="p-2">fetching protocal</span>
+                {address ? (<><Spinner animation="border" />
+                  <span className="p-2">fetching protocal</span></>) : (<><div style={{ minHeight: 400 }} className="d-flex align-items-center"><span>No wallet connect</span></div></>)}
               </div>
             </div>
           </>
